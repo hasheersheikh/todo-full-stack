@@ -4,7 +4,9 @@ import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
 
 export const BASE_URL =
-  import.meta.env.MODE === "development" ? "http://localhost:4000/api" : "/api";
+  import.meta.env.MODE === "development"
+    ? "http://localhost:4000/api"
+    : "https://todo-full-stack-production.up.railway.app/api";
 
 function App() {
   return (
