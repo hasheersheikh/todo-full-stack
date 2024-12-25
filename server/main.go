@@ -36,11 +36,11 @@ func main() {
 	clientOptions := options.Client().ApplyURI(MongoDB_URL)
 
 	client, err := mongo.Connect(context.Background(), clientOptions)
-	defer client.Disconnect(context.Background())
 
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer client.Disconnect(context.Background())
 
 	err = client.Ping(context.Background(), nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func main() {
 
 	app.Use(cors.New(cors.Config{
 		AllowHeaders:     "Origin,Content-Type,Accept,Content-Length,Accept-Language,Accept-Encoding,Connection,Access-Control-Allow-Origin",
-		AllowOrigins:     "http://localhost:5173, https://todo-full-stack-weld.vercel.app/",
+		AllowOrigins:     "http://localhost:5173,https://todo-full-stack-weld.vercel.app,https://todo-full-stack-production.up.railway.app",
 		AllowCredentials: true,
 		AllowMethods:     "GET,POST,HEAD,PUT,DELETE,PATCH,OPTIONS",
 	}))
@@ -65,15 +65,16 @@ func main() {
 	if PORT == "" {
 		PORT = "4000"
 	}
-	// todos := []Todo{}
 
 	app.Get("/api/todos", getTodos)
 	app.Post("/api/todos", createTodo)
 	app.Patch("/api/todos/:id", updateTodo)
 	app.Delete("/api/todos/:id", deleteTodo)
+	app.Get("/health", func(c *fiber.Ctx) error {
+		return c.SendString("OK")
+	})
 
-	log.Fatal(app.Listen(":" + PORT))
-
+	log.Fatal(app.Listen("0.0.0.0:" + PORT))
 }
 
 func getTodos(c *fiber.Ctx) error {
