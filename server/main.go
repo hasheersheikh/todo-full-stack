@@ -54,12 +54,13 @@ func main() {
 	app := fiber.New()
 
 	app.Use(cors.New(cors.Config{
-		AllowHeaders:     "Origin,Content-Type,Accept,Content-Length,Accept-Language,Accept-Encoding,Connection,Access-Control-Allow-Origin",
-		AllowOrigins:     "http://localhost:5173,https://todo-full-stack-weld.vercel.app,https://todo-full-stack-production.up.railway.app",
-		AllowCredentials: true,
-		AllowMethods:     "GET,POST,HEAD,PUT,DELETE,PATCH,OPTIONS",
+		AllowOrigins:     "*",                                                       // Allows all origins (no restrictions on the client making requests)
+		AllowMethods:     "GET,POST,PUT,DELETE,PATCH,OPTIONS",                       // Allow necessary HTTP methods
+		AllowHeaders:     "Origin,Content-Type,Accept,Authorization,Content-Length", // Allow common headers
+		AllowCredentials: false,                                                     // No credentials are required (you can remove this line if you don't need it)
+		ExposeHeaders:    "Content-Length,Content-Range",                            // Expose headers that the client can access
+		MaxAge:           86400,                                                     // Cache pre-flight requests for 24 hours (optional)
 	}))
-
 	PORT := os.Getenv("PORT")
 
 	if PORT == "" {
