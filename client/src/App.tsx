@@ -6,7 +6,7 @@ import TodoList from "./components/TodoList";
 export const BASE_URL =
   import.meta.env.MODE === "development"
     ? "http://localhost:4000/api"
-    : "https://todo-full-stack-production.up.railway.app/api";
+    : "https://todo-full-stack-ifde.onrender.com/api";
 
 function App() {
   return (
